@@ -14,6 +14,10 @@ output "auto_scale_group_cloudwatch_alarm_id" {
   value = awscc_cloudwatch_alarm.sensor_asg_high_cpu_alarm.id
 }
 
+output "gateway_load_balancer_arn" {
+  value = aws_lb.sensor_lb.arn
+}
+
 output "launch_template_id" {
   value = aws_launch_template.sensor_launch_template.id
 }
