@@ -62,6 +62,19 @@ resource "aws_iam_instance_profile" "corelight_sensor" {
   name = "<name of the instance profile>"
   role = module.enrichment_sensor_role.sensor_role_name
 }
+
+### optionally connect a VPC endpoint service 
+resource "aws_vpc_endpoint_service" "gwlb_vpce_service" {
+  acceptance_required        = false
+  gateway_load_balancer_arns = [module.sensor.gateway_load_balancer_arn]
+  service_name               = ${var.sensor_asg_name}-gwlb-vpce-service"
+}
+
+# do not add service principals above, edits will cause the resource to be recreated
+resource "aws_vpc_endpoint_service_allowed_principal" "allowed_principal" {
+  vpc_endpoint_service_id = aws_vpc_endpoint_service.gwlb_vpce_service.id
+  principal_arn = "<ARN of principal">
+}
 ```
 
 ### Deployment
